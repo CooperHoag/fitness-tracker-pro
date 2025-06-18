@@ -28,5 +28,5 @@ export default function useQuery(resource, tag) {
     query();
   }, []);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch: query };
 }

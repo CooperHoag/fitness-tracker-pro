@@ -10,8 +10,9 @@ export default function RoutineDetails() {
     data: routine,
     loading,
     error,
-    refetch: refetchRoutine,
+    refetch,
    } = useQuery(`/routines/${routineId}`, `routine-${routineId}`);
+
   const { token } = useAuth();
   const navigate = useNavigate();
   const {
@@ -20,6 +21,18 @@ export default function RoutineDetails() {
     error: deleteError,
   } = useMutation("DELETE", `/routines/${routineId}`, ["routines"]);
 
+  const {
+    mutate: deleteSet,
+    loading: deletingSet,
+    error: deleteSetError,
+  } = useMutation("DELETE", "", ["routines"]);
+
+  const handleDeleteSet = async (setId) => {
+    await deleteSet(`/sets/${setId}`);
+    refetch(); // refresh after deletion
+  };
+  
+  
   const removeRoutine=() => {
     deleteRoutine();
     navigate("/routines")
@@ -46,10 +59,19 @@ export default function RoutineDetails() {
         routine.sets.map((set) => (
           <p key={set.id}>
             {set.name} x {set.count}
+            {token && (
+              <button
+                onClick={() => handleDeleteSet(set.id)}
+                disabled={deletingSet}
+                style={{ marginLeft: "10px" }}
+              >
+                {deletingSet ? "Deleting..." : "Delete"}
+              </button>
+            )}
           </p>
         ))
       )}
-      {token && <SetForm routineId={routineId} refetchRoutine={refetchRoutine} />}
+      {token && <SetForm routineId={routineId} refetchRoutine={refetch} />}
     </>
   )
 };

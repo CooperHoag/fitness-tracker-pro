@@ -4,6 +4,7 @@ import { useState } from "react";
 
 /** Users can create new activities with a name and description. */
 export default function SetForm({ routineId, refetchRoutine }) {
+  console.log("refetchRoutine received:", refetchRoutine);
   const { 
     data: activities, 
     loading: loadingActivities, 
@@ -28,10 +29,18 @@ export default function SetForm({ routineId, refetchRoutine }) {
       routineId: Number(routineId),
     });
   
-    refetchRoutine();
+    console.log("refetchRoutine received:", refetchRoutine);
+  
+    if (typeof refetchRoutine === "function") {
+      refetchRoutine(); // safe call
+    } else {
+      console.warn("refetchRoutine is NOT a function", refetchRoutine);
+    }
+  
     setActivityId("");
     setCount("");
   };
+  
 
   return (
     <form onSubmit={handleSubmit}>
