@@ -9,6 +9,7 @@ export default function Navbar() {
       <p>Fitness Tracker</p>
       <nav>
         <NavLink to="/activities">Activites</NavLink>
+        <NavLink to="/routines">Routines</NavLink>
         {token ? (
           <NavLink to="/logout">Log Out</NavLink>
         ) : (
