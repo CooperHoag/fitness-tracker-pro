@@ -29,8 +29,6 @@ export default function SetForm({ routineId, refetchRoutine }) {
     });
   
     refetchRoutine();
-    console.log("refetchRoutine in SetForm is:", refetchRoutine);
-
     setActivityId("");
     setCount("");
   };
